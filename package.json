@@ -1,0 +1,30 @@
+{
+  "name": "lexertl",
+  "version": "1.0.0",
+  "description": "Typescript wrapper around c++ lexical analysis library 'lexertl'",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "node-gyp rebuild && tsc",
+    "start": "node build/index.js"
+  },
+  "keywords": [
+    "c++",
+    "cxx",
+    "cpp",
+    "lexertl",
+    "lexer",
+    "tokens"
+  ],
+  "author": "Veetaha",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "node-gyp": "^5.0.3",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "nan": "^2.14.0",
+    "node-addon-api": "^1.7.1"
+  }
+}

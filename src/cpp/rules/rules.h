@@ -9,19 +9,17 @@ public:
     using Super = Napi::ObjectWrap<Rules>;
     using Super::Super;
 
-    static constexpr const char * const name = "Rules";
+    static constexpr const char * const name { "Rules" };
     
     Rules(const Napi::CallbackInfo&);
 
-    auto& GetRules() & { return m_rules; }
+    const auto& GetRules() const& { return m_rules; }
+    lexertl::rules& GetRules() && = delete;
+    
     void Push(const Napi::CallbackInfo&);
+    void PushImpl(const Napi::Env& env, const Napi::Object& rule);
 
-
-    static auto GetClass(const Napi::Env& env) {
-        return DefineClass(env, name, {
-            InstanceMethod("push", &Push)
-        });
-    }
+    static void Export(const Napi::Env& env, Napi::Object& exports);
 
 private:
     using IdType = lexertl::rules::id_type;

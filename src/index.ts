@@ -1,9 +1,5 @@
 import * as AddonType from './types';
 
-const Addon: typeof AddonType = require('./Release/bitset.node');
-
-console.dir(Addon, {
-    depth: 5
-});
+const Addon: typeof AddonType = require('../build/Debug/lexertl.node');
 
 export = Addon;

@@ -2,15 +2,15 @@
     "exclude": ["node_modules"],
     "include": ["src/**/*.ts"],
     "compilerOptions": {
-      "outDir": "build",
+      "outDir": "dist",
   
       "module": "commonjs",
       "moduleResolution": "node",
       "target": "esnext",
   
-      "declaration":    false,
-      "declarationMap": false,
-      "sourceMap":      false,
+      "declaration":    true,
+      "declarationMap": true,
+      "sourceMap":      true,
   
       "allowJs":                      false,
       "esModuleInterop":              true,

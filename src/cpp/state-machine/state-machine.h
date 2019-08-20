@@ -8,12 +8,15 @@ class StateMachine : public Napi::ObjectWrap<StateMachine> {
 public:
     using Super = Napi::ObjectWrap<StateMachine>;
     using Super::Super;
+
+    static constexpr const char * const name { "StateMachine" };
     
     auto& GetStateMachine() & { return m_stateMachine; }
-    void Minimize(const Napi::CallbackInfo&) {
-        m_stateMachine.minimise();
-    }
+
+    void Minimize(const Napi::CallbackInfo&);
+
+    static void Export(const Napi::Env& env, Napi::Object& exports);
 
 private:
-    lexertl::state_machine m_stateMachine;    
+    lexertl::state_machine m_stateMachine;  
 };

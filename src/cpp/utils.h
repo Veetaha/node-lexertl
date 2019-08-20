@@ -1,7 +1,21 @@
+#include <iostream>
 #include <functional>
 #include <napi.h>
 
 namespace Utils {
+
+    template <typename TMethodKey>
+    auto CallMethod(
+        Napi::Value instance, 
+        const TMethodKey& methodKey, 
+        const std::initializer_list<napi_value>& params
+    ) {
+        return instance
+            .template As<Napi::Object>()
+            .Get(methodKey)
+            .template As<Napi::Function>()
+            .Call(instance, params);
+    }
 
     template <typename TValue>
     void ForEachInIterable(
@@ -9,29 +23,23 @@ namespace Utils {
         const Napi::Value& iterable, 
         const std::function<void(const TValue&)>& cb
     ) {
-        const auto jsSymbolIterator { 
-            env.Global().Get("Symbol").As<Napi::Object>().Get("iterator") 
-        };
+        const Napi::HandleScope scope{env};
 
-        const auto iterator { 
-            iterable.As<Napi::Object>().Get(jsSymbolIterator).As<Napi::Object>() 
-        };
+        const auto symbolIterator { Napi::Symbol::WellKnown(env, "iterator") };
 
-        const auto iteratorNext {
-            iterator.Get("next").As<Napi::Function>()
-        };
+        const auto iterator { CallMethod(iterable, symbolIterator, {}).As<Napi::Object>() };
 
-        while (true) { 
-            const Napi::HandleScope scope{env};
+        const auto iteratorNext { iterator.Get("next").As<Napi::Function>() };
 
-            const auto iterVal { 
-                iteratorNext.Call(iterator, 0, nullptr).As<Napi::Object>() 
-            };
+        do { 
+            const Napi::HandleScope scope2{env};
+
+            auto iterVal = iteratorNext.Call(iterator, {}).As<Napi::Object>();
 
             if (iterVal.Get("done").As<Napi::Boolean>().Value()) return;
 
             cb(iterVal.Get("value").As<TValue>());
-        }
+        } while (true);
     }
 
 

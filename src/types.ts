@@ -1,13 +1,4 @@
-export interface IRule<TId extends number = number> {
-    regex: string;
-    id:    TId;
-    // TODO: add more properties
-}
-
-export declare class Rules<TId extends number = number> {
-
-    constructor(initialRules: Iterable<IRule<TId>>);
-
-    push(rule: IRule<TId>): void;
-
-}
+export * from './cpp/generator/generator';
+export * from './cpp/rules/rules';
+export * from './cpp/state-machine/state-machine';
+export * from './cpp/table-based-cpp/table-based-cpp';

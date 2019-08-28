@@ -1,7 +1,7 @@
-import { StateMachine, TableBasedCpp, Rules, Generator } from '../dist';
-
+import { StateMachine, TableBasedCpp, Rules, Generator } from '../helpers/index';
 
 describe('TableBasedCpp.generateCpp()', () => {
+
     it('should generate cpp code according to lexertl api', () => {
         const enum TokenType { Invalid, Number, Identifier }
 

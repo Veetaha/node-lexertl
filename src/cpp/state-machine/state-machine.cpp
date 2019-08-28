@@ -3,11 +3,11 @@
 #include "state-machine.h"
 
 void StateMachine::Minimize(const Napi::CallbackInfo&) {
-    m_stateMachine.minimise();
+    m_StateMachine.minimise();
 }
 
 void StateMachine::Export(const Napi::Env& env, Napi::Object& exports) {
-    exports.Set(name, DefineClass(env, name, {
+    exports.Set(s_Name, DefineClass(env, s_Name, {
         InstanceMethod("minimize", &StateMachine::Minimize)
     }));
 }

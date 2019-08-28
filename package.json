@@ -1,37 +1,58 @@
 {
-  "name": "lexertl",
-  "version": "1.0.0",
-  "description": "Typescript wrapper around c++ lexical analysis library 'lexertl'",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "jest",
-    "build:cpp": "node-gyp rebuild --debug",
-    "build:cpp:release": "node-gyp rebuild",
-    "build:ts": "tsc",
-    "build": "npm run build:cpp && npm run build:ts",
-    "start": "node dist/index.js"
-  },
-  "keywords": [
-    "c++",
-    "cxx",
-    "cpp",
-    "lexertl",
-    "lexer",
-    "tokens"
-  ],
-  "author": "Veetaha",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "jest": "^24.9.0",
-    "node-gyp": "^5.0.3",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
-  },
-  "dependencies": {
-    "@types/node": "^12.7.2",
-    "node-addon-api": "^1.7.1",
-    "tslib": "^1.10.0"
-  }
+    "name": "lexertl-ts",
+    "version": "1.0.0",
+    "description": "Typescript wrapper around c++ lexical analysis library 'lexertl'",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "jest",
+        "test:debug": "node --inspect-brk -r ts-node/register node_modules/.bin/jest --runInBand",
+        "install:cpp": "conan install . --install-folder conan",
+        "install": "          node-pre-gyp install --fallback-to-build",
+        "build:cpp": "        node-pre-gyp rebuild --debug",
+        "build:cpp:release": "node-pre-gyp rebuild --&& rm -rf build",
+        "package:bin": "      node-pre-gyp package",
+        "publish:bin": "      node-pre-gyp publish",
+        "memcheck": "valgrind --log-file=logs/memcheck.txt --error-limit=no --leak-check=yes --suppressions=valgrind.supp --read-inline-info=yes node -r ts-node/register node_modules/.bin/jest --runInBand",
+
+        "build:ts": "tsc",
+        "build": "npm run build:cpp && npm run build:ts",
+        "start": "node dist/index.js"
+    },
+    "binary": {
+        "module_name": "lexertlts",
+        "module_path": "./dist/bin-cpp/{configuration}/{platform}-{arch}/{node_abi}/napi-v{napi_build_version}",
+        "host":        "https://lexertl.s3-us-west-1.amazonaws.com",
+        "remote_path": "/{node_abi}/{platform}/{arch}/{napi_build_version}",
+        "napi_versions": [4]
+    },
+    "keywords": [
+        "c++",
+        "cxx",
+        "cpp",
+        "lexertl",
+        "lexer",
+        "tokens",
+        "n-api",
+        "napi",
+        "addon",
+        "native"
+    ],
+    "author": "Veetaha",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/jest": "^24.0.18",
+        "aws-sdk": "^2.514.0",
+        "jest": "^24.9.0",
+        "node-gyp": "^5.0.3",
+        "ts-jest": "^24.0.2",
+        "ts-node": "^8.3.0",
+        "tslint": "^5.18.0",
+        "typescript": "^3.5.3"
+    },
+    "dependencies": {
+        "@types/node": "^12.7.2",
+        "node-addon-api": "^1.7.1",
+        "node-pre-gyp": "^0.13.0",
+        "tslib": "^1.10.0"
+    }
 }

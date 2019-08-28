@@ -1,30 +1,51 @@
 {
-  "targets": [{
-        # myModule is the name of your native addon
-        'target_name': 'lexertl',
+    "targets": [{
+        # 'configurations': {
+        #     'Debug': {
+        #         'cflags_cc': []
+        #     }
+        # },
+        'target_name': '<(module_name)',
+        'product_dir': '<(module_path)',
+
+        'defines': [
+            'NAPI_VERSION=<(napi_build_version)'
+        ],
+
+        'libraries': [
+            '../conan/modules/lib/libfmt.a'
+        ],
 
         'sources': [
             'src/cpp/index.cpp',
             'src/cpp/generator/generator.cpp',
             'src/cpp/rules/rules.cpp',
             'src/cpp/state-machine/state-machine.cpp',
-            'src/cpp/table-based-cpp/table-based-cpp.cpp',
+            'src/cpp/table-based-cpp/table-based-cpp.cpp'
         ],
-        # from Napi docs:
         'include_dirs': [
-            "<!@(node -p \"require('node-addon-api').include\")",
-            "vendor/lexertl14/include",
-            "src/cpp",
-            "src/cpp/generator",
-            "src/cpp/rules",
-            "src/cpp/state-machine",
-            "src/cpp/table-based-cpp"
+            '<!@(node -p "require(\'node-addon-api\').include")',
+
+            # dependencies
+            'conan/modules/include',
+            'vendor/lexertl14/include',
+
+            # sources
+            'src/cpp',
+            'src/cpp/generator',
+            'src/cpp/rules',
+            'src/cpp/state-machine',
+            'src/cpp/table-based-cpp'
         ],
+
         'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
 
+        # Taken from Napi docs:
+        # TODO: investigate what all those settings do
         # enable exceptions
-        'cflags!': ['-fno-exceptions'],
+        'cflags!':    ['-fno-exceptions'],
         'cflags_cc!': ['-fno-exceptions'],
+        'cflags_cc':  ['-std=gnu++2a'],
 
         'xcode_settings': {
             'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
@@ -35,6 +56,7 @@
         'msvs_settings': {
             'VCCLCompilerTool': {'ExceptionHandling': 1},
         },
+
         'conditions': [
             ['OS=="mac"', {
                 'cflags+': ['-fvisibility=hidden'],

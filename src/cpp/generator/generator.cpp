@@ -4,14 +4,16 @@
 #include <lexertl/generator.hpp>
 #include <lexertl/generate_cpp.hpp>
 
+#include "nut/unwrap.h"
+
 #include "rules.h"
 #include "state-machine.h"
 
 namespace Generator {
     void Build(const Napi::CallbackInfo& info) {
 
-        const auto& rules { Rules::Unwrap(info[0].As<Napi::Object>())->GetRules() };
-        auto& sm {   StateMachine::Unwrap(info[1].As<Napi::Object>())->GetStateMachine() };
+        const auto& rules { Nut::Unwrap<Rules>(info[0])->GetRules() };
+        auto& sm { Nut::Unwrap<StateMachine>(info[1])->GetStateMachine() };
 
         try {
             lexertl::generator::build(rules, sm);

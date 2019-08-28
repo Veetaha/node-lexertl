@@ -1,5 +1,6 @@
-import * as AddonType from './types';
+import Path from 'path';
+import * as Npg from 'node-pre-gyp';
 
-const Addon: typeof AddonType = require('../build/Debug/lexertl.node');
-
-export = Addon;
+export = require(Npg.find(Path.resolve(Path.join(
+    __dirname, '../package.json'
+)))) as typeof import('./types');
